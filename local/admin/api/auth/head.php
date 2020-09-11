@@ -6,6 +6,7 @@ define("CLIENT_MODE", "DEVELOPMENT");
 switch (CLIENT_MODE)
 {
     case "DEVELOPMENT":
+        header("Access-Control-Allow-Headers: X-CSRF-Token");
         header("Access-Control-Allow-Origin: *");
         break;
     default:
