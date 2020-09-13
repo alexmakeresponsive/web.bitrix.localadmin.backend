@@ -21,6 +21,7 @@ $userId          = $USER->GetID();
 $userGroupIdList = CUser::GetUserGroup($userId);
 
 $status     = 403;
+$status_role     = 200;
 
 $headers    = getallheaders();
 
@@ -33,7 +34,7 @@ if ($_COOKIE['PHPSESSID'] === $phpSessId)
     $status = 200;
 }
 
-if(!$USER->IsAuthorized() || !in_array($userId, $userGroupIdList))
+if(!$USER->IsAuthorized())
 {
     $status = 403;
 }
