@@ -13,10 +13,9 @@ switch (CLIENT_MODE)
         header("Access-Control-Allow-Origin: http://192.168.100.6");
         break;
 }
-        header("Content-Type: application/json;");
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
-require_once($_SERVER["DOCUMENT_ROOT"] . "/local/admin/api/auth/helper.php");
+require_once($_SERVER["DOCUMENT_ROOT"] . "/local/admin/server/helper.php");
 
 $userId          = $USER->GetID();
 $userGroupIdList = CUser::GetUserGroup($userId);
@@ -38,3 +37,5 @@ if(!$USER->IsAuthorized() || !in_array($userId, $userGroupIdList))
 {
     $status = 403;
 }
+
+header("Content-Type: application/json;");

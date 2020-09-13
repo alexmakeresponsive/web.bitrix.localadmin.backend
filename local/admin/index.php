@@ -6,9 +6,10 @@ $userGroupIdList = CUser::GetUserGroup($userId);
 
 if(!$USER->IsAuthorized() || !in_array($userId, $userGroupIdList))
 {
-    LocalRedirect('/local/admin/login/?php=yes');
+    LocalRedirect('/local/admin/login/?php=index');
 }
 else
 {
-    LocalRedirect('/local/admin/client/?php=yes');
+//    require_once $_SERVER["DOCUMENT_ROOT"] . "/local/admin/client/index.html";
+    LocalRedirect('/local/admin/app/?php=index');
 }

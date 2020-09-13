@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER["DOCUMENT_ROOT"] . "/local/admin/api/auth/head.php");
+require_once($_SERVER["DOCUMENT_ROOT"] . "/local/admin/server/head.php");
 
 if ($tokenCsrfHeader !== $tokenCsrfServer)
 {
