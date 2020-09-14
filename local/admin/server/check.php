@@ -11,6 +11,7 @@ if($status !== 200)
 $roleGroupIdMap = [
     "ADMIN"         => 10,
     "CONTENT_ADMIN" => 13,
+//    SOMEBODY
 ];
 
 $groupId = $roleGroupIdMap[$_REQUEST['role']];
@@ -24,17 +25,19 @@ if(empty($groupId) || !in_array($groupId, $userGroupIdList))
 if (CLIENT_MODE === 'DEVELOPMENT')
 {
     $status = 200;
+    $status_role = 200;
     $tokenCsrfServer = "622f4de829350ee2d3b540382e1b74a7";
 }
 
     // todo: should be work only when user load/refresh page, for router links don't check this
     echo json_encode([
         'status'     => $status,
-        '$status_role'     => $status_role,
+        'status_role'     => $status_role,
         'TOKEN_CSRF' => $tokenCsrfServer, // todo: check
         'request' => $_REQUEST,
         '$userGroupIdList' => $userGroupIdList,
         '$groupId' => $groupId,
+        'space' => 'ADMIN',
 //        'cookie' => $_COOKIE['PHPSESSID'],
 //        'phpSessId' => $phpSessId,
 //        'getallheaders' => getallheaders(),
