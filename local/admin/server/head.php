@@ -20,8 +20,10 @@ require_once($_SERVER["DOCUMENT_ROOT"] . "/local/admin/server/helper.php");
 $userId          = $USER->GetID();
 $userGroupIdList = CUser::GetUserGroup($userId);
 
-$status     = 403;
-$status_role     = 200;
+$status          = 403;
+$status_role     = 403;
+
+$status_authorized = "N";
 
 $headers    = getallheaders();
 
@@ -37,6 +39,11 @@ if ($_COOKIE['PHPSESSID'] === $phpSessId)
 if(!$USER->IsAuthorized())
 {
     $status = 403;
+
+}
+else
+{
+    $status_authorized = "Y";
 }
 
 header("Content-Type: application/json;");
