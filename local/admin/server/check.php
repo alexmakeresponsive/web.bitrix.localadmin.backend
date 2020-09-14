@@ -33,14 +33,33 @@ if ($status == 200)
 
 if (CLIENT_MODE === 'DEVELOPMENT')
 {
-    $status = 200;
-    $status_role = 200;
+    if(1)
+    {
+        $status = 200;
+        $status_role = 200;
 
-    $tokenCsrfServer = "622f4de829350ee2d3b540382e1b74a7";
+        $tokenCsrfServer = "622f4de829350ee2d3b540382e1b74a7";
 
-    $space     =  "ADMIN";
 //    $spaceList = ["ADMIN", "CONTENT_ADMIN"];
-    $spaceList = ["ADMIN"];
+        $spaceList = ["CONTENT_ADMIN"];
+//    $spaceList = ["ADMIN"];
+
+        $status_authorized = 'Y';
+    }
+    if(0)
+    {
+        $status = 403;
+        $status_role = 403;
+
+        $tokenCsrfServer = "";
+
+//    $spaceList = ["ADMIN", "CONTENT_ADMIN"];
+//        $spaceList = ["CONTENT_ADMIN"];
+//    $spaceList = ["ADMIN"];
+    $spaceList = [];
+
+        $status_authorized = 'N';
+    }
 }
 
     // todo: should be work only when user load/refresh page, for router links don't check this
