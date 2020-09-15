@@ -10,7 +10,8 @@ header("Content-Type: application/json;");
 class Style
 {
     const CSS_DIR       = "/local/admin/asset/_nuxt/css";
-    const NUXT_CSS_NAME = "app.0c41111.css";
+    const CSS_DIR_APP   = "/local/admin/app/_nuxt";
+    const NUXT_CSS_NAME = "app.f8d201c.css";
 
     private static $status = 200;
 
@@ -35,7 +36,10 @@ class Style
 
                         $name = trim(substr($line, $p2 + 1, -(strlen($line) -$p1)));
 
+                        $id = strtolower($name);
+
                         $r[] = [
+                            'id' => $id,
                             'name' => $name,
                             'file' => $path ."/" . $v
                         ];
@@ -64,6 +68,24 @@ class Style
         return true;
     }
 
+    private function getFileById($cssList, $id)
+    {
+        $name = '';
+
+        foreach ($cssList as $i => $v)
+        {
+            if(substr_count($v, $id))
+            {
+                $name = $cssList[$i];
+                break;
+            }
+        }
+
+//        return str_replace('.css', '', $name);
+
+        return $name;
+    }
+
     public static function getMap()
     {
         $cssDirPath = $_SERVER["DOCUMENT_ROOT"] . self::CSS_DIR;
@@ -80,11 +102,57 @@ class Style
         ]);
     }
 
+    public static function updateFile($id)
+    {
+        $cssDirPath    = $_SERVER["DOCUMENT_ROOT"] . self::CSS_DIR;
+        $cssDirAppPath = $_SERVER["DOCUMENT_ROOT"] . self::CSS_DIR_APP;
+
+        $cssListRaw = scandir($cssDirPath);
+
+        $cssList = array_filter($cssListRaw, [__CLASS__, "rmDots"]);
+
+        $name = self::getFileById($cssList, $id);
+
+        if(empty($name))
+        {
+            echo json_encode([
+                'status'  => 404,
+                'id'  => $id,
+            ]);
+           return;
+        }
+
+        try
+        {
+            $r1 = unlink($cssDirAppPath . '/' . self::NUXT_CSS_NAME);
+            $r2 = copy($cssDirPath . '/' . $name, $cssDirAppPath . '/' . self::NUXT_CSS_NAME);
+
+            if(in_array(false, [$r1, $r2]))
+            {
+                self::$status = 500;
+            }
+
+        }
+        catch (Exception $e)
+        {
+            self::$status = 500;
+        }
+
+
+        echo json_encode([
+            'r'  => [$r1,$r2],
+            'status'  => self::$status,
+        ]);
+    }
 }
 
 switch ($_REQUEST['q'])
 {
     case "getMap":
         Style::getMap();
+    break;
+
+    case "updateFile":
+        Style::updateFile($_REQUEST['id']);
     break;
 }
