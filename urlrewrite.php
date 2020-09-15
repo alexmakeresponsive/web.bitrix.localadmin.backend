@@ -90,6 +90,7 @@ $arUrlRewrite=array (
       'SORT' => 100,
     ),
 
+
     13 =>
         array(
             'CONDITION' => '#^/local/admin/app/#',
@@ -102,35 +103,51 @@ $arUrlRewrite=array (
         array(
             'CONDITION' => '#^/local/admin/login/#',
             'RULE' => '',
-            'ID' => 'bitrix:news',
+            'ID' => '',
             'PATH' => '/local/admin/login.php',
             'SORT' => 100,
         ),
 
-
-
-    // api
     15 =>
+        array(
+            'CONDITION' => '#^/local/admin/settings/theme/style#',
+            'RULE' => '',
+            'ID' => '',
+            'PATH' => '/local/admin/server/settings/theme/Style.php',
+            'SORT' => 100,
+        ),
+
+    16 =>
+        array(
+            'CONDITION' => '#^/local/admin/settings/lang#',
+            'RULE' => '',
+            'ID' => '',
+            'PATH' => '/local/admin/server/settings/Lang.php',
+            'SORT' => 100,
+        ),
+
+    17 =>
         array(
             'CONDITION' => '#^/api/auth/logout#',
             'RULE' => '',
-            'ID' => 'bitrix:news',
+            'ID' => '',
             'PATH' => '/local/admin/server/logout.php',
             'SORT' => 100,
         ),
-    16 =>
+    // api
+    18 =>
         array(
             'CONDITION' => '#^/api/auth/check#',
             'RULE' => '',
-            'ID' => 'bitrix:news',
+            'ID' => '',
             'PATH' => '/local/admin/server/check.php',
             'SORT' => 100,
         ),
-    17 =>
+    19 =>
         array(
             'CONDITION' => '#^/api/content/iblock#',
             'RULE' => '',
-            'ID' => 'bitrix:news',
+            'ID' => '',
             'PATH' => '/local/admin/server/api/iblock.php',
             'SORT' => 100,
         ),
