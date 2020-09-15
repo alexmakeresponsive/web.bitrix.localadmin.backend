@@ -9,14 +9,18 @@ class Lang
 
     private static $status = 200;
 
-    private function addTitle($langList)
+    private function getData($langList, $query)
     {
         $r = [];
 
             $path = $_SERVER["DOCUMENT_ROOT"] . self::LANG_DIR;
 
-        foreach ($langList as $v)
+        foreach ($langList as $i => $v)
         {
+
+            $id = str_replace ('.json', '', $v);
+
+            $r[$id] = [];
 
                 $string = file_get_contents($path . "/" . $v);
             if ($string === false) {
@@ -28,10 +32,18 @@ class Lang
                 self::$status = 500;
             }
 
-            $r[] = [
-                'file'  => $path . "/" . $v,
-                'data' => $json_a
-            ];
+            if($query === 'data')
+            {
+                $r[$id] = array_merge($r[$id], [
+                    'data' => $json_a
+                ]);
+            }
+
+                $r[$id] = array_merge($r[$id], [
+                    'id'     => $id,
+                    'title'  => $json_a['title'],
+                    'file'   => $path . "/" . $v,
+                ]);
         }
 
         return $r;
@@ -53,11 +65,25 @@ class Lang
         $langListRaw = scandir($langDirPath);
 
         $langList          = array_filter($langListRaw, [__CLASS__, "rmDots"]);
-        $langListWithTitle = self::addTitle($langList);
+        $langListWithTitle = self::getData($langList, 'title');
 
         echo json_encode([
             'status'  => self::$status,
-            'langMap' => $langListWithTitle
+            'langHead' => $langListWithTitle
+        ]);
+    }
+
+    public function getJson()
+    {
+        $langDirPath = $_SERVER["DOCUMENT_ROOT"] . self::LANG_DIR;
+        $langListRaw = scandir($langDirPath);
+
+        $langList          = array_filter($langListRaw, [__CLASS__, "rmDots"]);
+        $langListWithTitle = self::getData($langList, 'data');
+
+        echo json_encode([
+            'status'  => self::$status,
+            'langData' => $langListWithTitle
         ]);
     }
 
@@ -67,5 +93,8 @@ switch ($_REQUEST['q'])
 {
     case "getMap":
         Lang::getMap();
+    break;
+    case "getJson":
+        Lang::getJson();
     break;
 }
