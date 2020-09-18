@@ -2,6 +2,8 @@
 
 namespace LocalAdmin;
 
+use mysql_xdevapi\Exception;
+
 require_once($_SERVER["DOCUMENT_ROOT"] . "/local/admin/server/guard.php");
 
 class IBlock
@@ -139,6 +141,30 @@ class IBlock
         ]);
     }
 
+    public function getIblockSection($idSection)
+    {
+        $json = [
+            'status'  => self::$status,
+            'data'    => null,
+        ];
+
+        try
+        {
+            $res = \CIBlockSection::GetByID($idSection);
+
+            $ar_res = $res->GetNext();
+
+            $json['data'] = $ar_res;
+        }
+        catch (Exception $e)
+        {
+            self::$status = 500;
+            $json = array_merge($json, ['error' => $e]);
+        }
+
+        echo json_encode($json);
+    }
+
     public function updateIblockElement($req)
     {
         global $USER;
@@ -215,6 +241,104 @@ class IBlock
             'error'      => $error
         ]);
     }
+
+    public function updateIblockSection($req)
+    {
+        global $USER;
+
+        $json = [
+            'status'  => self::$status,
+            'res'    => null,
+        ];
+
+        $bs = new \CIBlockSection;
+
+        $userID = $USER->GetID();
+
+        if(CLIENT_MODE === "DEVELOPMENT")
+        {
+            $userID = 1;
+        }
+
+        $values = json_decode($req['values'], JSON_OBJECT_AS_ARRAY);
+
+        $arFields = Array(
+//            "ACTIVE" => $ACTIVE,
+            "IBLOCK_ID"         => $req['idIblock'],
+            "IBLOCK_SECTION_ID" => $values['IBLOCK_SECTION_ID'],
+            "NAME"              => $values['NAME'],
+//            "SORT" => $SORT,
+//            "PICTURE" => $arPICTURE,
+//            "DESCRIPTION" => $DESCRIPTION,
+//            "DESCRIPTION_TYPE" => $DESCRIPTION_TYPE
+        );
+
+        try
+        {
+            $res = $bs->Update($req['idSection'], $arFields);
+
+            $error = !$res ? $bs->LAST_ERROR : '';
+
+            $json['res']   = $res;
+            $json['error'] = $error;
+        }
+        catch (Exception $e)
+        {
+            self::$status = 500;
+            $json = array_merge($json, ['error' => $e]);
+        }
+
+        echo json_encode($json);
+    }
+
+    public function addIblockSection($req)
+    {
+        global $USER;
+
+        $json = [
+            'status'  => self::$status,
+            'res'    => null,
+        ];
+
+        $bs = new \CIBlockSection;
+
+        $userID = $USER->GetID();
+
+        if(CLIENT_MODE === "DEVELOPMENT")
+        {
+            $userID = 1;
+        }
+
+        $values = json_decode($req['values'], JSON_OBJECT_AS_ARRAY);
+
+        $arFields = Array(
+//            "ACTIVE" => $ACTIVE,
+            "IBLOCK_ID"         => $req['idIblock'],
+            "IBLOCK_SECTION_ID" => $values['IBLOCK_SECTION_ID'],
+            "NAME"              => $values['NAME'],
+//            "SORT" => $SORT,
+//            "PICTURE" => $arPICTURE,
+//            "DESCRIPTION" => $DESCRIPTION,
+//            "DESCRIPTION_TYPE" => $DESCRIPTION_TYPE
+        );
+
+        try
+        {
+            $res = $bs->Add($arFields);
+
+            $error = !$res ? $bs->LAST_ERROR : '';
+
+            $json['res']   = $res;
+            $json['error'] = $error;
+        }
+        catch (Exception $e)
+        {
+            self::$status = 500;
+            $json = array_merge($json, ['error' => $e]);
+        }
+
+        echo json_encode($json);
+    }
 }
 
 $c = new IBlock();
@@ -234,7 +358,7 @@ switch ($_REQUEST['q'])
         $c->getIblockElement($_REQUEST['id'], $_REQUEST['idElement']);
     break;
     case "getIblockSection":
-        $c->getIblockSection();
+        $c->getIblockSection($_REQUEST['idsection']);
     break;
     case "updateIblockElement":
         $c->updateIblockElement($_REQUEST);
@@ -242,7 +366,10 @@ switch ($_REQUEST['q'])
     case "addIblockElement":
         $c->addIblockElement($_REQUEST);
     break;
-    case "setIblockSection":
-        $c->setIblockSection();
+    case "updateIblockSection":
+        $c->updateIblockSection($_REQUEST);
+    break;
+    case "addIblockSection":
+        $c->addIblockSection($_REQUEST);
     break;
 }
