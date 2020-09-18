@@ -14,6 +14,7 @@ class Style
     const NUXT_CSS_NAME = "app.f8d201c.css";
 
     private static $status = 200;
+    private static $error  = '';
 
     private function addTitle($cssList)
     {
@@ -136,11 +137,20 @@ class Style
         catch (Exception $e)
         {
             self::$status = 500;
+            self::$error  = $e;
         }
 
 
         echo json_encode([
-            'r'  => [$r1,$r2],
+            'error' => self::$error,
+//            'r'  => [$r1,$r2],
+//            'p' => [
+//                $cssDirAppPath . '/' . self::NUXT_CSS_NAME,
+//                [
+//                    $cssDirPath . '/' . $name,
+//                    $cssDirAppPath . '/' . self::NUXT_CSS_NAME
+//                ]
+//            ],
             'status'  => self::$status,
         ]);
     }

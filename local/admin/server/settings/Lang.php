@@ -73,7 +73,7 @@ class Lang
         ]);
     }
 
-    public function getJson()
+    public static function getJson()
     {
         $langDirPath = $_SERVER["DOCUMENT_ROOT"] . self::LANG_DIR;
         $langListRaw = scandir($langDirPath);

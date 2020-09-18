@@ -91,14 +91,14 @@ $arUrlRewrite=array (
     ),
 
 
-    13 =>
-        array(
-            'CONDITION' => '#^/local/admin/app/#',
-            'RULE' => '',
-            'ID' => '',
-            'PATH' => '/local/admin/app/',
-            'SORT' => 100,
-        ),
+//    13 =>
+//        array(
+//            'CONDITION' => '#^/local/admin/app/#',
+//            'RULE' => '',
+//            'ID' => '',
+//            'PATH' => '/local/admin/app/',
+//            'SORT' => 100,
+//        ),
     14 =>
         array(
             'CONDITION' => '#^/local/admin/login/#',
@@ -128,7 +128,7 @@ $arUrlRewrite=array (
 
     17 =>
         array(
-            'CONDITION' => '#^/api/auth/logout#',
+            'CONDITION' => '#^/local/admin/auth/logout#',
             'RULE' => '',
             'ID' => '',
             'PATH' => '/local/admin/server/logout.php',
@@ -137,7 +137,7 @@ $arUrlRewrite=array (
     // api
     18 =>
         array(
-            'CONDITION' => '#^/api/auth/check#',
+            'CONDITION' => '#^/local/admin/auth/check#',
             'RULE' => '',
             'ID' => '',
             'PATH' => '/local/admin/server/check.php',
@@ -145,10 +145,10 @@ $arUrlRewrite=array (
         ),
     19 =>
         array(
-            'CONDITION' => '#^/api/content/iblock#',
+            'CONDITION' => '#^/local/admin/api/iblock#',
             'RULE' => '',
             'ID' => '',
-            'PATH' => '/local/admin/server/api/iblock.php',
+            'PATH' => '/local/admin/api/IBlock.php',
             'SORT' => 100,
         ),
 );

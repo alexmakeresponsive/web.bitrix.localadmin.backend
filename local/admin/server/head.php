@@ -1,7 +1,7 @@
 <?php
 
-//define("CLIENT_MODE", "DEVELOPMENT");
-define("CLIENT_MODE", "PRODUCTION");
+define("CLIENT_MODE", "DEVELOPMENT");
+//define("CLIENT_MODE", "PRODUCTION");
 
 switch (CLIENT_MODE)
 {
