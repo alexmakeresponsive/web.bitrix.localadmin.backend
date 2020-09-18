@@ -75,19 +75,47 @@ class IBlock
 
     public function getListIblockSection($id)
     {
-        $d = [];
-        $i = 0;
+        $arLincs = [];
 
-        $arFilter = array('IBLOCK_ID' => $id);
-        $rsSections = \CIBlockSection::GetList(array(), $arFilter);
-        while ($arSection = $rsSections->Fetch())
-        {
-            $d[$arSection['ID']] = $arSection;
+        $filter = array('IBLOCK_ID' => $id);
+        $select = ['NAME'];
+
+        $dbSection = \CIBlockSection::GetList(
+            Array(
+//                'LEFT_MARGIN' => 'ASC',
+            ),
+            array_merge(
+                Array(
+                    'ACTIVE' => 'Y',
+                    'GLOBAL_ACTIVE' => 'Y'
+                ),
+                is_array($filter) ? $filter : Array()
+            ),
+            false,
+            array_merge(
+                Array(
+                    'ID',
+                    'IBLOCK_SECTION_ID'
+                ),
+                is_array($select) ? $select : Array()
+            )
+        );
+
+        while( $arSection = $dbSection->GetNext(true, false) ){
+
+            $SID = $arSection['ID'];
+            $PSID = (int) $arSection['IBLOCK_SECTION_ID'];
+
+            $arLincs[$PSID]['CHILDS'][$SID] = $arSection;
+
+            $arLincs[$SID] = &$arLincs[$PSID]['CHILDS'][$SID];
         }
+
+        $parent = array_shift($arLincs);
 
         echo json_encode([
             'status'  => self::$status,
-            'data' => $d,
+            'data' => $parent['CHILDS'],
             'id'   => $id,
         ]);
     }
