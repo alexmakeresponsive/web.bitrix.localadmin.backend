@@ -80,7 +80,7 @@ class IBlock
         $rsSections = \CIBlockSection::GetList(array(), $arFilter);
         while ($arSection = $rsSections->Fetch())
         {
-            $d[] = $arSection;
+            $d[$arSection['ID']] = $arSection;
         }
 
         echo json_encode([
@@ -156,7 +156,7 @@ class IBlock
 
         $arLoadProductArray = Array(
             "MODIFIED_BY"    => $userID, // элемент изменен текущим пользователем
-            "IBLOCK_SECTION" => $req['idSection'],          // элемент лежит в корне раздела
+            "IBLOCK_SECTION_ID" => $req['idSection'],          // элемент лежит в корне раздела
             "NAME"           => $values['NAME'],
 //            "ACTIVE"         => "Y",            // активен
 //            "PREVIEW_TEXT"   => "текст для списка элементов",

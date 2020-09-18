@@ -40,8 +40,8 @@ if (CLIENT_MODE === 'DEVELOPMENT')
 
         $tokenCsrfServer = "622f4de829350ee2d3b540382e1b74a7";
 
-//    $spaceList = ["ADMIN", "CONTENT_ADMIN"];
-        $spaceList = ["CONTENT_ADMIN"];
+    $spaceList = ["ADMIN", "CONTENT_ADMIN"];
+//        $spaceList = ["CONTENT_ADMIN"];
 //    $spaceList = ["ADMIN"];
 
         $status_authorized = 'Y';
