@@ -139,7 +139,7 @@ class IBlock
         ]);
     }
 
-    public function setIblockElement($req)
+    public function updateIblockElement($req)
     {
         global $USER;
 
@@ -178,6 +178,43 @@ class IBlock
             'res'        => $res,
         ]);
     }
+
+    public function addIblockElement($req)
+    {
+        global $USER;
+
+        $el = new \CIBlockElement;
+
+        $userID = $USER->GetID();
+
+        if(CLIENT_MODE === "DEVELOPMENT")
+        {
+            $userID = 1;
+        }
+
+        $values = json_decode($req['values'], JSON_OBJECT_AS_ARRAY);
+
+        $arLoadProductArray = Array(
+            "MODIFIED_BY"    => $userID, // элемент изменен текущим пользователем
+            "IBLOCK_SECTION_ID" => $req['idSection'],          // элемент лежит в корне раздела
+            "IBLOCK_ID"         => $req['idIblock'],
+            "NAME"           => $values['NAME'],
+//            "ACTIVE"         => "Y",            // активен
+//            "PREVIEW_TEXT"   => "текст для списка элементов",
+            "DETAIL_TEXT"    => $values['DETAIL_TEXT'],
+//            "DETAIL_PICTURE" => CFile::MakeFileArray($_SERVER["DOCUMENT_ROOT"]."/image.gif")
+        );
+
+        $res   = $el->Add($arLoadProductArray);
+
+        $error = !$res ? $el->LAST_ERROR : '';
+
+        echo json_encode([
+            'status'     => self::$status,
+            'res'        => $res,
+            'error'      => $error
+        ]);
+    }
 }
 
 $c = new IBlock();
@@ -199,8 +236,11 @@ switch ($_REQUEST['q'])
     case "getIblockSection":
         $c->getIblockSection();
     break;
-    case "setIblockElement":
-        $c->setIblockElement($_REQUEST);
+    case "updateIblockElement":
+        $c->updateIblockElement($_REQUEST);
+    break;
+    case "addIblockElement":
+        $c->addIblockElement($_REQUEST);
     break;
     case "setIblockSection":
         $c->setIblockSection();
