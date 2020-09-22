@@ -159,4 +159,12 @@ $arUrlRewrite=array (
             'PATH' => '/local/admin/api/sale.php',
             'SORT' => 100,
         ),
+    21 =>
+        array(
+            'CONDITION' => '#^/local/admin/api/catalog#',
+            'RULE' => '',
+            'ID' => '',
+            'PATH' => '/local/admin/api/catalog.php',
+            'SORT' => 100,
+        ),
 );
