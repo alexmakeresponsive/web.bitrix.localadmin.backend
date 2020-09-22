@@ -151,4 +151,12 @@ $arUrlRewrite=array (
             'PATH' => '/local/admin/api/IBlock.php',
             'SORT' => 100,
         ),
+    20 =>
+        array(
+            'CONDITION' => '#^/local/admin/api/sale#',
+            'RULE' => '',
+            'ID' => '',
+            'PATH' => '/local/admin/api/sale.php',
+            'SORT' => 100,
+        ),
 );

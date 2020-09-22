@@ -2,7 +2,7 @@
 
 namespace LocalAdmin;
 
-use mysql_xdevapi\Exception;
+use \Exception;
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/local/admin/server/guard.php");
 
@@ -57,6 +57,57 @@ class IBlock
                                     'CHECK_PERMISSIONS'    =>'N',
                                 ), true
                             );
+            while($ar_res = $res->Fetch())
+            {
+                $d[$i]['LIST_CHILD'][$j] = $ar_res;
+
+                $j++;
+            }
+
+            $i++;
+        }
+
+        echo json_encode([
+            'status'  => self::$status,
+            'data' => $d,
+        ]);
+    }
+
+    public function getListCatalogIblock()
+    {
+        $dataCheck = [];
+        $d = [];
+        $i = 0;
+        $j = 0;
+
+        $typeNotSkipList = ['catalog', 'offers'];
+
+        $db_iblock_type = \CIBlockType::GetList();
+        while($ar_iblock_type = $db_iblock_type->Fetch())
+        {
+            if(!in_array($ar_iblock_type['ID'], $typeNotSkipList))
+            {
+                continue;
+            }
+
+            if($arIBType = \CIBlockType::GetByIDLang($ar_iblock_type["ID"], 'ru'))
+            {
+                $d[$i] = array_merge($ar_iblock_type, ['NAME' => $arIBType["NAME"]]);
+            }
+            else
+            {
+                $d[$i] = $ar_iblock_type;
+            }
+
+            $res = \CIBlock::GetList(
+                Array(),
+                Array(
+                    'TYPE'      => $ar_iblock_type['ID'],
+                    'SITE_ID'   => 's1',
+                    'ACTIVE'    =>'Y',
+                    'CHECK_PERMISSIONS'    =>'N',
+                ), true
+            );
             while($ar_res = $res->Fetch())
             {
                 $d[$i]['LIST_CHILD'][$j] = $ar_res;
@@ -375,6 +426,9 @@ switch ($_REQUEST['q'])
 {
     case "getListIblock":
         $c->getListIblock();
+    break;
+    case "getListCatalogIblock":
+        $c->getListCatalogIblock();
     break;
     case "getListIblockSection":
         $c->getListIblockSection($_REQUEST['id']);
